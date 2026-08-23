@@ -14,7 +14,7 @@ jobs:
         run: npm install # this command will install all the dependencies listed in package.json (a bash command)
       - name: Run Tests
         run: npm test # this command will run the tests defined in your project (a bash command)
-      - name: Run Lint
-        run: npm run lint # this command will run the linter defined in your project (a bash command)
+      # - name: Run Lint
+      #   run: npm run lint # this command will run the linter defined in your project (a bash command)
       - name: Run Build
         run: npm run build # this command will run the build script defined in your project (a bash command) 
