@@ -6,7 +6,15 @@ jobs:
     steps: # any jobs can be implemented as a series of steps, each step is a single task that can run commands in a job
       - name: Get The Code # you should give the step a name to identify it in the workflow run logs
         uses: actions/checkout@v3 # this action checks out your repository under $GITHUB_WORKSPACE, so your workflow can access it
-      - name: set nodejs version # set the nodejs version for the workflow
+      - name: set nodejs version 
         uses: actions/setup-node@v7
         with: # with here describes the input parameters for the action as a configuration gateway
           node-version: 20
+      - name: Install Dependencies
+        run: npm install # this command will install all the dependencies listed in package.json (a bash command)
+      - name: Run Tests
+        run: npm test # this command will run the tests defined in your project (a bash command)
+      - name: Run Lint
+        run: npm run lint # this command will run the linter defined in your project (a bash command)
+      - name: Run Build
+        run: npm run build # this command will run the build script defined in your project (a bash command) 
