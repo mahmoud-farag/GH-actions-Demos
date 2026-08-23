@@ -1,0 +1,12 @@
+name: for testing pipeline # the name of the workflow, you can give it any name you want
+on: push
+jobs:
+  main-testing: # the name of the job, you can give it any name you want
+    runs-on: ubuntu-latest # the type of virtual host machine to run the job on
+    steps: # any jobs can be implemented as a series of steps, each step is a single task that can run commands in a job
+      - name: Get The Code # you should give the step a name to identify it in the workflow run logs
+        uses: actions/checkout@v3 # this action checks out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - name: set nodejs version # set the nodejs version for the workflow
+        uses: actions/setup-node@v7
+        with: # with here describes the input parameters for the action as a configuration gateway
+          node-version: 20
