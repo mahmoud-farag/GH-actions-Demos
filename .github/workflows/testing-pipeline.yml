@@ -1,7 +1,7 @@
 name: for testing pipeline # the name of the workflow, you can give it any name you want
 on: push
 jobs:
-  main-testing: # the name of the job, you can give it any name you want
+  test-job: # the name of the job, you can give it any name you want
     runs-on: ubuntu-latest # the type of virtual host machine to run the job on
     steps: # any jobs can be implemented as a series of steps, each step is a single task that can run commands in a job
       - name: Get The Code # you should give the step a name to identify it in the workflow run logs
@@ -16,5 +16,19 @@ jobs:
         run: npm test # this command will run the tests defined in your project (a bash command)
       # - name: Run Lint
       #   run: npm run lint # this command will run the linter defined in your project (a bash command)
+  deploy-job:
+    runs-on: ubuntu-latest #every job gets its runner - its own virtual machine that's totally isolated from other jobs.
+    steps:
+      - name: Get The Code
+        uses: actions/checkout@v3
+      - name: set nodejs version 
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: npm install 
       - name: Run Build
-        run: npm run build # this command will run the build script defined in your project (a bash command) 
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying..." 
+      
