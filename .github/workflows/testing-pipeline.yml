@@ -17,6 +17,7 @@ jobs:
       # - name: Run Lint
       #   run: npm run lint # this command will run the linter defined in your project (a bash command)
   deploy-job:
+    needs: test-job # this job will only run if the test-job is successful
     runs-on: ubuntu-latest #every job gets its runner - its own virtual machine that's totally isolated from other jobs.
     steps:
       - name: Get The Code
