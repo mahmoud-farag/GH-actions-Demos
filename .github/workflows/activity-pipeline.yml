@@ -1,0 +1,13 @@
+name: check github activities events
+on:
+  pull_request:
+    types: [opened, edited] # trigger this workflow once a new PR is opened or edited
+  workflow_dispatch: # give you the ability to run this workflow
+jobs:
+  check-activities-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get The Code
+        uses: actions/checkout@v3
+      - name: Get Github Activities Context
+        run: echo "${{toJson(github.event)}}" # this command will print the github context information in json format
