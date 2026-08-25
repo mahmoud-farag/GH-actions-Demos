@@ -1,5 +1,10 @@
 name: for testing pipeline # the name of the workflow, you can give it any name you want
-on: push
+# on: push # only fire this workflow automatically  on push
+
+## the job will fire based on any new push or when the workflow is manually triggered from the Actions tab in the repo,
+##so this means we can have multiple events for the same workflow
+on: [push, workflow_dispatch] 
+
 jobs:
   test-job: # the name of the job, you can give it any name you want
     runs-on: ubuntu-latest # the type of virtual host machine to run the job on
