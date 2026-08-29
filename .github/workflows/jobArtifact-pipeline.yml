@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Get The Code
         uses: actions/checkout@v3
+      - name: cache node dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-dependencies-${{ hashFiles('**/package-lock.json') }}
       - name: install dependencies
         run: npm ci
       - name: lint Code
@@ -27,6 +32,11 @@ jobs:
     steps:
       - name: Get The Code
         uses: actions/checkout@v3
+      - name: cache node dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-dependencies-${{ hashFiles('**/package-lock.json') }}
       - name: install dependencies
         run: npm ci
       - name: Build website
