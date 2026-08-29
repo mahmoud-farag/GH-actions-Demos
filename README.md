@@ -163,7 +163,38 @@ Reusable units of code that perform common tasks:
 - **`actions/upload-artifact@v4`** - Uploads files as artifacts
 - **`actions/download-artifact@v4`** - Downloads artifacts from previous jobs
 
-### 6. Caching Dependencies
+### 6. Path Filters
+
+Control when workflows run based on file paths that changed:
+
+**`paths`** - Only run if specific paths are modified
+```yaml
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'package.json'
+```
+
+**`paths-ignore`** - Run for all changes EXCEPT specified paths
+```yaml
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'      # Ignores all markdown files in any directory
+      - 'docs/**'      # Ignores entire docs folder
+      - '.gitignore'   # Ignores specific files
+```
+
+**Common Glob Patterns:**
+- `**/*.md` - All markdown files in any directory
+- `*.md` - Only markdown files in root directory
+- `src/**` - All files in src folder
+- `src/**/*.js` - All JS files in src and subdirectories
+
+⚠️ **Important:** Use `**/*.md` NOT `**.md` (the latter is invalid syntax and will be ignored)
+
+### 7. Caching Dependencies
 
 Improve workflow performance by caching dependencies:
 - Use `actions/cache` to cache npm packages, dependencies, etc.
@@ -171,7 +202,7 @@ Improve workflow performance by caching dependencies:
 
 [Learn more about caching](https://github.com/actions/cache)
 
-### 7. GitHub Actions Expressions
+### 8. GitHub Actions Expressions
 
 Dynamically evaluate values in your workflows:
 - Use `${{ expression }}` syntax
