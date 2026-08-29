@@ -178,6 +178,7 @@ on:
 
 **`paths-ignore`** - Run for all changes EXCEPT specified paths
 ```yaml
+
 on:
   push:
     paths-ignore:
