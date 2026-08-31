@@ -23,9 +23,11 @@ jobs:
         run: npm run lint
       - name: Test Code
         id: test-step
-        run: npm run test
+        run: npm run test -- --reporter=json --outputFile=test-report.json
       - name: Upload Test Artifact
-        if: failure() && steps.test-step.outcome == 'failure'
+        # the artifact will be uploaded only if the test job fails and you have to use the 'failure' function to check if the test
+        # job failed and also you have to use the 'steps.test-step.outcome' to check if the test step failed or not
+        if: failure() && steps.test-step.outcome == 'failure' 
         uses: actions/upload-artifact@v4
         with:
           name: test-report-artifact
