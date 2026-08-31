@@ -13,6 +13,7 @@ jobs:
       - name: Get The Code
         uses: actions/checkout@v3
       - name: cache node dependencies
+        id: cache
         uses: actions/cache@v3
         with:
           # path: ~/.npm
@@ -43,6 +44,7 @@ jobs:
       - name: Get The Code
         uses: actions/checkout@v3
       - name: cache node dependencies
+        id: cache
         uses: actions/cache@v3
         with:
           # path: ~/.npm
