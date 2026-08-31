@@ -23,18 +23,4 @@ jobs:
       #   run: npm run lint # this command will run the linter defined in your project (a bash command)
   deploy-job:
     needs: test-job # this job will only run if the test-job is successful
-    runs-on: ubuntu-latest #every job gets its runner - its own virtual machine that's totally isolated from other jobs.
-    steps:
-      - name: Get The Code
-        uses: actions/checkout@v3
-      - name: set nodejs version 
-        uses: actions/setup-node@v7
-        with:
-          node-version: 20
-      - name: Install Dependencies
-        run: npm install 
-      - name: Run Build
-        run: npm run build
-      - name: Deploy
-        run: echo "Deploying..." 
-      
+    uses: ./.github/workflows/reusable-pipeline.yml # this job will use the reusable workflow defined in the reusable-pipeline.yml file
