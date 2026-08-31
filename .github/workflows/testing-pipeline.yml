@@ -24,3 +24,6 @@ jobs:
   deploy-job:
     needs: test-job # this job will only run if the test-job is successful
     uses: ./.github/workflows/reusable-pipeline.yml # this job will use the reusable workflow defined in the reusable-pipeline.yml file
+    with:
+      artifact-name: dist
+
