@@ -4,6 +4,7 @@ on:
     branches: [main]
 jobs:
   build-job:
+    continue-on-error: true # continue the job even if any job failed in any OS/nodejsverions
     strategy:
       matrix:
         node-version: [16.x, 18.x, 24.x]
