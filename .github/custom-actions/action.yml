@@ -13,3 +13,4 @@ runs:
     - name: install dependencies
       if: steps.cache.outputs.cache-hit != 'true' # this step will run only if the cache is not hit
       run: npm ci
+      shell: bash
