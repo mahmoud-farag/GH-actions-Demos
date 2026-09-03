@@ -13,9 +13,12 @@ jobs:
       - name: Get The Code
         uses: actions/checkout@v3
       - name: Cache & Install Dependencies
+        id: cache-install
         uses: ./.github/custom-actions # this is the path to the custom action, and you have to use the relative path to the custom action in your repository 
         with:
           should-cache: 'false' # you can pass the input value to the custom action, and you have to use the same name as the input name in the custom action
+      - name: output the cache status
+        run: 'echo "Cache status: ${{ steps.cache-install.outputs.used-cache }}"'
       - name: lint Code
         run: npm run lint
       - name: Test Code
@@ -38,9 +41,12 @@ jobs:
       - name: Get The Code
         uses: actions/checkout@v3
       - name: Cache & Install Dependencies
+        id: cache-install
         uses: ./.github/custom-actions # this is the path to the custom action, and you have to use the relative path to the custom action in your repository 
         with:
           should-cache: 'true' # you can pass the input value to the custom action, and you have to use the same name as the input name in the custom action  
+      - name: output the cache status
+        run: 'echo "Cache status: ${{ steps.cache-install.outputs.used-cache }}"'
       - name: Build website
         run: npm run build
       - name: Publish JS files to the deploy-job

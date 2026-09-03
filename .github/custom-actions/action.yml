@@ -5,6 +5,10 @@ inputs:
     description: 'Whether to cache dependencies or not'
     required: false
     default: 'true'
+outputs:
+  used-cache:
+    description: 'Whether the cache was used or not'
+    value: ${{ steps.install.outputs.used-cache }}
 runs:
   using: "composite" # for the custom action this command is mandatory, it tells the action to use a composite run steps action
   steps:
@@ -17,6 +21,9 @@ runs:
         path: node_modules # will cache the node_modules folder instead of the ~/.npm folder
         key: node-dependencies-${{ hashFiles('**/package-lock.json') }}
     - name: install dependencies
+      id: install
       if: steps.cache.outputs.cache-hit != 'true' || ${{ inputs.should-cache != 'true' }} # this step will run only if the cache is not hit or if caching is disabled
-      run: npm ci
+      run: |
+        npm ci
+        echo "used-cache=${{ steps.cache.outputs.cache-hit }}" >> $GITHUB_OUTPUT
       shell: bash
