@@ -13,7 +13,7 @@ jobs:
       - name: Get The Code
         uses: actions/checkout@v3
       - name: Cache & Install Dependencies
-        uses: ./github/custom-actions # this is the path to the custom action, and you have to use the relative path to the custom action in your repository 
+        uses: ./.github/custom-actions # this is the path to the custom action, and you have to use the relative path to the custom action in your repository 
       - name: lint Code
         run: npm run lint
       - name: Test Code
