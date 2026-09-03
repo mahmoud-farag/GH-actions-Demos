@@ -1,0 +1,94 @@
+name: Job Artifact demo
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+    
+jobs:
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get The Code
+        uses: actions/checkout@v3
+      - name: Cache & Install Dependencies
+        uses: ./github/custom-actions # this is the path to the custom action, and you have to use the relative path to the custom action in your repository 
+      - name: lint Code
+        run: npm run lint
+      - name: Test Code
+        id: test-step
+        run: npm run test -- --reporter=json --outputFile=test-report.json
+      - name: Upload Test Artifact
+        # the artifact will be uploaded only if the test job fails and you have to use the 'failure' function to check if the test
+        # job failed and also you have to use the 'steps.test-step.outcome' to check if the test step failed or not
+        if: failure() && steps.test-step.outcome == 'failure' 
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-artifact
+          path: test-report.json
+  build-job:
+    runs-on: ubuntu-latest
+    needs: test-job
+    outputs:
+      script-file: ${{ steps.unique-id.outputs.script-file }}
+    steps:
+      - name: Get The Code
+        uses: actions/checkout@v3
+      - name: cache node dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          # path: ~/.npm
+          path: node_modules # will cache the node_modules folder instead of the ~/.npm folder
+          key: node-dependencies-${{ hashFiles('**/package-lock.json') }}
+      - name: install dependencies
+        if: steps.cache.outputs.cache-hit != 'true' # this step will run only if the cache is not hit
+        run: npm ci
+      - name: Build website
+        run: npm run build
+      - name: Publish JS files to the deploy-job
+        id: unique-id
+        run: find dist/assets/*.js -type f -execdir echo '::set-output name=script-file::{}' ';'
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: dist
+          # path: |  
+          #   dist
+          #   package.json
+
+  deploy-job:
+    runs-on: ubuntu-latest
+    needs: build-job
+    steps:
+      - name: Get build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact #i have to use the same name as the uploaded artifact in the previous job
+      - name: List the build artifact
+        run: ls
+      - name: Display the JS files name
+        run: echo "the JS file name is ${{ needs.build-job.outputs.script-file }}"
+      - name: Deploy website
+        run: echo "Deploying website..."
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
