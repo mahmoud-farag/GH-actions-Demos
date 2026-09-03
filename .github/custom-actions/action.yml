@@ -1,9 +1,15 @@
 name: Cache & install dependencies
 description: This action caches and installs dependencies.
+inputs:
+  should-cache:
+    description: 'Whether to cache dependencies or not'
+    required: false
+    default: 'true'
 runs:
   using: "composite" # for the custom action this command is mandatory, it tells the action to use a composite run steps action
   steps:
     - name: cache node dependencies
+      if: ${{ inputs.should-cache == 'true' }} # this step will run only if the input value is true
       id: cache
       uses: actions/cache@v3
       with:
@@ -11,6 +17,6 @@ runs:
         path: node_modules # will cache the node_modules folder instead of the ~/.npm folder
         key: node-dependencies-${{ hashFiles('**/package-lock.json') }}
     - name: install dependencies
-      if: steps.cache.outputs.cache-hit != 'true' # this step will run only if the cache is not hit
+      if: steps.cache.outputs.cache-hit != 'true' || ${{ inputs.should-cache != 'true' }} # this step will run only if the cache is not hit or if caching is disabled
       run: npm ci
       shell: bash
